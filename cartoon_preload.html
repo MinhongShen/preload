@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8" />
+		<title>图片预加载之有序加载</title>
+		<style type="text/css">
+			a {
+				text-decoration: none;
+			}
+			
+			.box {
+				text-align: center;
+			}
+			
+			.btn {
+				display: inline-block;
+				height: 30px;
+				line-height: 30px;
+				border: 1px solid #ccc;
+				background-color: #fff;
+				padding: 0 10px;
+				margin-right: 50px;
+				color: #333;
+			}
+			
+			.btn:hover {
+				background-color: #eee;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="" class="box">
+			<img id="img" src="http://img8.u17i.com/09/10/1368/1225_1255509444_Ei5e7V8H0Z8c.520f7_svol.jpg" alt="pic" width="1200" />
+			<p>
+				<a href="javascript:void(0);" class="btn" data-control="prev">上一页</a>
+				<a href="javascript:void(0);" class="btn" data-control="next">下一页</a>
+			</p>
+		</div>
+
+		<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+		<script type="text/javascript" src="js/preload.js"></script>
+		<script type="text/javascript">
+			//			imgs = ['http://img8.u17i.com/09/10/1368/1225_1255509444_Ei5e7V8H0Z8c.520f7_svol.jpg', 
+			//					'http://img8.u17i.com/09/10/1368/1225_1255509454_b7O8773GESEs.5385a_svol.jpg',
+			//					'http://img8.u17i.com/09/10/1368/1225_1255509477_1S2bS5fvGx7R.a187e_svol.jpg'];
+			//			var len = imgs.length,
+			//				count = 0,
+			//				index = 0;
+			//				
+			//			load();
+			//			
+			//			//有序预加载
+			//			function load(){
+			//				var imgObj = new Image();
+			//				$(imgObj).on('load error',function(){
+			//					if (count >= len) {
+			//						//所有图片已经加载完毕
+			//					} else{
+			//						load();
+			//					}
+			//					
+			//					count++;
+			//				});
+			//				imgObj.src = imgs[count];
+			//			}
+			//		
+			//			$('.btn').on('click', function() {
+			//				if($(this).data('control') === 'prev') {
+			//					//上一张
+			//					index = Math.max(0, --index);
+			//				} else {
+			//					//下一张
+			//					index = Math.min(len - 1, ++index);
+			//				}
+			//				document.title = (index + 1) + '/' + len;
+			//				$('#img').attr('src', imgs[index]);
+			//			});
+
+			imgs = ['http://img8.u17i.com/09/10/1368/1225_1255509444_Ei5e7V8H0Z8c.520f7_svol.jpg',
+				'http://img8.u17i.com/09/10/1368/1225_1255509454_b7O8773GESEs.5385a_svol.jpg',
+				'http://img8.u17i.com/09/10/1368/1225_1255509477_1S2bS5fvGx7R.a187e_svol.jpg'
+			];
+			var len = imgs.length,
+				index = 0;
+				
+			$.preload(imgs,{
+				order:'ordered'
+			});
+
+			$('.btn').on('click', function() {
+				if($(this).data('control') === 'prev') {
+					//上一张
+					index = Math.max(0, --index);
+				} else {
+					//下一张
+					index = Math.min(len - 1, ++index);
+				}
+				document.title = (index + 1) + '/' + len;
+				$('#img').attr('src', imgs[index]);
+			});
+		</script>
+	</body>
+
+</html>

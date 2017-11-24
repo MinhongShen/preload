@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title>图片预加载之无序加载</title>
+		<style type="text/css">
+			html,
+			body {
+				height: 100%;
+			}
+			
+			a {
+				text-decoration: none;
+			}
+			
+			.box {
+				text-align: center;
+			}
+			
+			.btn {
+				display: inline-block;
+				height: 30px;
+				line-height: 30px;
+				border: 1px solid #ccc;
+				background-color: #fff;
+				padding: 0 10px;
+				margin-right: 50px;
+				color: #333;
+			}
+			
+			.btn:hover {
+				background-color: #eee;
+			}
+			
+			.loading {
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				background-color: #EEEEEE;
+				text-align: center;
+				font-size: 30px;
+			}
+			.progress{
+				margin-top: 300px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="" class="box">
+			<img id="img" src="https://assets.volvocars.com/zh-cn/~/media/china/images/cars/s90/20170224/pdp-hero-01s.jpg" alt="pic" width="1200" />
+			<p>
+				<a href="javascript:void(0);" class="btn" data-control="prev">上一页</a>
+				<a href="javascript:void(0);" class="btn" data-control="next">下一页</a>
+			</p>
+		</div>
+		<div id="" class="loading">
+			<p class="progress">
+				0%
+			</p>
+		</div>
+		<script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
+		<script type="text/javascript">
+			var imgs = [
+				'https://assets.volvocars.com/zh-cn/~/media/china/images/cars/s90/20170224/pdp-hero-01s.jpg',
+				'https://assets.volvocars.com/zh-cn/~/media/china/images/cars/s90/20170302/4v2.jpg',
+				'https://assets.volvocars.com/zh-cn/~/media/china/images/cars/s90/20170302/8v2.jpg',
+				'https://assets.volvocars.com/zh-cn/~/media/china/images/cars/s90/20170302/s1v3.jpg',
+				'https://assets.volvocars.com/zh-cn/~/media/china/images/cars/s90/20170302/5v2.jpg',
+				'https://assets.volvocars.com/zh-cn/~/media/china/images/cars/s90/20170525/feature-one-01.jpg'
+			];
+			var index = 0,
+				len = imgs.length,
+				count = 0,
+				$progress = $('.progress');
+				
+			$.each(imgs, function(i,src) {
+				var imgObj = new Image();
+				
+				$(imgObj).on('load error',function(){
+					$progress.html(Math.round((count+1)/len *100)+'%')
+					if (count >= len-1){
+						$('.loading').hide();
+						document.title ='1/'+len;
+					}
+					count ++;
+				});
+				imgObj.src = src;
+			});
+				
+			$('.btn').on('click', function() {
+				if($(this).data('control') === 'prev') {
+					//上一张
+					index = Math.max(0, --index);
+				} else {
+					//下一张
+					index = Math.min(len - 1, ++index);
+				}
+				document.title = (index + 1) + '/' + len;
+				$('#img').attr('src', imgs[index]);
+			});
+
+		</script>
+	</body>
+
+</html>
